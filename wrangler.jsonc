@@ -1,0 +1,16 @@
+// Cloudflare Workers (static assets) config.
+// Used when the repo is connected through "Workers & Pages -> Create -> Import a repository",
+// where the deploy command is `npx wrangler deploy`.
+// A classic Pages project ignores this file (it has no `pages_build_output_dir`).
+{
+  // Workers Builds overrides this with the name chosen in the dashboard if it differs.
+  "name": "fanbazar",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    // The site lives at the repo root (index.html, lex/, gram/, darsyar/, sentences/, tokens/, further/).
+    // Files that must not be published are listed in .assetsignore.
+    "directory": "./",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none"
+  }
+}

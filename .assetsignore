@@ -1,0 +1,15 @@
+# Files in the repo root that must NOT be uploaded as site assets
+# (only used by `wrangler deploy`; same syntax as .gitignore)
+.git
+.gitignore
+.assetsignore
+.wrangler
+node_modules
+google_drive
+*.zip
+README.md
+wrangler.jsonc
+.DS_Store
+.npmrc
+.dev.vars*
+.env*
