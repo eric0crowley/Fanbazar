@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>درس‌یار — جعبه ابزار آفلاین معلم</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header id="app_header" class="app-header"></header>
+
+    <main id="app_main" class="app-main"></main>
+
+    <nav class="bottom-nav" aria-label="منوی اصلی">
+      <button type="button" class="nav-item active" data-tab="home" onclick="App.goTab('home')">
+        <span class="nav-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/></svg>
+        </span>
+        <span>خانه</span>
+      </button>
+      <button type="button" class="nav-item" data-tab="roster" onclick="App.goTab('roster')">
+        <span class="nav-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </span>
+        <span>شاگردان</span>
+      </button>
+      <button type="button" class="nav-item" data-tab="academic" onclick="App.goTab('academic')">
+        <span class="nav-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </span>
+        <span>حضور و نمره</span>
+      </button>
+      <button type="button" class="nav-item" data-tab="plan" onclick="App.goTab('plan')">
+        <span class="nav-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </span>
+        <span>برنامه و تکلیف</span>
+      </button>
+      <button type="button" class="nav-item" data-tab="tools" onclick="App.goTab('tools')">
+        <span class="nav-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+        </span>
+        <span>ابزارها</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- پنجره مودال عمومی -->
+  <div id="modal_backdrop" class="modal-backdrop" onclick="if(event.target===this) App.closeModal()">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3 id="modal_title" class="modal-title"></h3>
+        <button type="button" class="btn btn-sm btn-outline" onclick="App.closeModal()">✕ بستن</button>
+      </div>
+      <div id="modal_body"></div>
+    </div>
+  </div>
+
+  <div id="pin_lock_root"></div>
+  <div id="toast_container" class="toast-container"></div>
+
+  <script src="js/icons.js"></script>
+  <script src="js/jalali.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/modules-core.js"></script>
+  <script src="js/whiteboard-wheel.js"></script>
+  <script src="js/modules-tools.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

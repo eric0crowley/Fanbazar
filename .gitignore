@@ -1,0 +1,9 @@
+# Source archives from Google Drive (03 zips ~190 MB). They are only used once to
+# populate the site; the extracted files are what gets deployed, so keep them out of Git.
+google_drive/
+*.zip
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp

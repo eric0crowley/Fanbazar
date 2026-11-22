@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+  <title>FarhangLex (فرهنگ‌لکس)</title>
+  <script src="js/theme_boot.js"></script>
+  <script src="js/safety_net.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="native-app-container">
+
+    <!-- Android Material App Bar -->
+    <header class="android-app-bar">
+      <div class="appbar-top-row">
+        <div class="brand-section" onclick="switchTab('home')" style="cursor: pointer;">
+          <div class="brand-crest" style="border: none; padding: 0; overflow: hidden;">
+            <img src="img/app_icon_header.webp" alt="FarhangLex" width="38" height="38" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 10px;">
+          </div>
+          <div class="brand-titles">
+            <h1 class="brand-app-name">FarhangLex</h1>
+            <p>فرهنگ‌لکس</p>
+          </div>
+        </div>
+
+        <div class="appbar-actions">
+          <div class="stat-pill streak" id="stat-streak-pill" onclick="openStreakModal()" title="تقویم زنجیرهٔ روزانه و سپر یخی">
+            <span class="streak-fire-ico">🔥</span>
+            <span id="stat-streak-val">0</span>
+          </div>
+          <div class="stat-pill gems" id="stat-gems-pill" onclick="openShopModal()" title="الماس‌های تسلط • فروشگاه تم">
+            <span>💎</span>
+            <span id="stat-gems-val">25</span>
+          </div>
+          <button class="settings-icon-btn" id="hdr-about-btn" onclick="switchTab('about')" title="شناسنامهٔ علمی و سازنده">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+              <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+            </svg>
+          </button>
+          <button class="settings-icon-btn" onclick="openSettingsModal()" title="تنظیمات و پشتیبان‌گیری">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- v3.11: outside Home one compact line opens the grade sheet; the full bar (title + chips) stays on Home -->
+      <button type="button" class="hdr-grade-compact" id="hdr-grade-compact" onclick="openGradeModal()" aria-label="تغییر پایه">
+        <span>📘</span><span id="hdr-grade-compact-label">Vision 1 • پایهٔ دهم</span><span class="hdr-grade-caret">▾</span>
+      </button>
+      <div class="hdr-grade-full">
+      <!-- Grade Sub-Bar -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 0;">
+        <div>
+          <span id="header-grade-title" style="font-size: 13px; font-weight: 800; color: var(--emerald-dark);">Vision 1 (پایهٔ دهم)</span>
+          <span id="header-grade-sub" style="font-size: 12px; color: var(--text-muted); margin-right: 4px;">کتاب درسی مصوب</span>
+        </div>
+      </div>
+
+      <!-- Grade Chips Scroller -->
+      <div class="grade-chips-scroller">
+        <div class="grade-chips-track" id="grade-chips-track"></div>
+      </div>
+      </div>
+    </header>
+
+    <!-- Scrollable Content Body -->
+    <main class="native-content-body">
+
+      <!-- ==================== TAB 1: DASHBOARD ==================== -->
+      <section id="view-home" class="tab-view active">
+        <div class="hero-card">
+          <div class="hero-shimmer"></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div class="hero-badge" style="margin-bottom: 0;">سامانهٔ علمی تکرار بافاصلهٔ لایتنر (SM-2)</div>
+            <div id="dash-jalali-date" style="font-size: 12px; color: rgba(255,255,255,0.92); font-weight: 700;">یکشنبه، ۳ آبان ۱۴۰۵</div>
+          </div>
+          <h2>یادگیری واژگان در بافتار متن رسمی کتاب</h2>
+          <p id="dash-banner-sub">پایهٔ دهم • شامل ۴ درس و واژگان کلیدی استخراج‌شده از متون رسمی کتاب درسی.</p>
+          <button class="hero-cta-btn" id="dash-due-btn" onclick="startDueReviewSession()">
+            <span>⚡</span> شروع مرور امروز
+          </button>
+          <div class="daily-goal-bar-wrap" id="dash-goal-wrap" style="margin-top: 10px; background: rgba(0,0,0,0.18); padding: 8px 12px; border-radius: 10px;">
+            <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.95); margin-bottom: 4px;">
+              <span>🎯 هدف مرور روزانه: <strong id="dash-goal-text">۰ از ۳۰</strong></span>
+              <span id="dash-goal-pct">۰٪</span>
+            </div>
+            <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.25); border-radius: 3px; overflow: hidden;">
+              <div id="dash-goal-fill" style="width: 0%; height: 100%; background: #34d399; transition: width 0.3s;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5-Box Leitner Grid -->
+        <div class="leitner-overview-card">
+          <div class="card-title">
+            <span>📦</span>
+            <h3>وضعیت کارت‌ها در جعبه‌های پنج‌گانهٔ لایتنر</h3>
+          </div>
+          <div class="boxes-5-grid">
+            <div class="box-slot">
+              <div class="box-title">جعبهٔ ۱</div>
+              <div class="box-val" id="count-box-1">0</div>
+              <div class="box-sub">هر ۱ روز</div>
+            </div>
+            <div class="box-slot">
+              <div class="box-title">جعبهٔ ۲</div>
+              <div class="box-val" id="count-box-2">0</div>
+              <div class="box-sub">هر ۲ روز</div>
+            </div>
+            <div class="box-slot">
+              <div class="box-title">جعبهٔ ۳</div>
+              <div class="box-val" id="count-box-3">0</div>
+              <div class="box-sub">هر ۴ روز</div>
+            </div>
+            <div class="box-slot">
+              <div class="box-title">جعبهٔ ۴</div>
+              <div class="box-val" id="count-box-4">0</div>
+              <div class="box-sub">هر ۸ روز</div>
+            </div>
+            <div class="box-slot">
+              <div class="box-title">جعبهٔ ۵</div>
+              <div class="box-val" id="count-box-5">0</div>
+              <div class="box-sub">تسلط کامل</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Tiles Grid -->
+        <div class="quick-tiles-grid">
+          <button class="tile-btn" onclick="switchTab('leitner')">
+            <span class="tile-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+            </span>
+            <span class="tile-label">فلش‌کارت</span>
+          </button>
+          <button class="tile-btn" onclick="switchTab('context')">
+            <span class="tile-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+            </span>
+            <span class="tile-label">جمله‌های درس</span>
+          </button>
+          <button class="tile-btn" onclick="switchTab('quiz')">
+            <span class="tile-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 11l3 3L22 4"></path>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+              </svg>
+            </span>
+            <span class="tile-label">آزمون و بازی</span>
+          </button>
+          <button class="tile-btn" onclick="openStatsModal()">
+            <span class="tile-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+            </span>
+            <span class="tile-label">آمار پیشرفت</span>
+          </button>
+        </div>
+
+        <!-- v3.5.0 Daily Standard Study Quests + Golden Chest -->
+        <div class="daily-quests-card">
+          <div class="dq-head">
+            <div class="dq-title">🎯 مأموریت‌های استاندارد امروز</div>
+            <span class="dq-chest-pill" id="home-dq-chest-pill">🎁 صندوقچه: +۲۵ 💎</span>
+          </div>
+          <div class="dq-list" id="home-daily-quests-list"></div>
+        </div>
+
+        <!-- v3.5.0 Gamification & Theme Gallery Showcase Banner -->
+        <div class="home-rewards-banner" onclick="openShopModal('badges')">
+          <div class="home-rewards-left">
+            <div class="home-rewards-medal" id="home-rank-icon">🏅</div>
+            <div style="min-width: 0;">
+              <div style="font-size: 13px; font-weight: 900; color: var(--text-main);" id="home-rank-title">تالار افتخارات و گالری تم‌ها</div>
+              <div style="font-size: 12px; color: var(--text-muted);" id="home-rewards-sub">سطح ۱ • ۱۰ تم حرفه‌ای</div>
+            </div>
+          </div>
+          <span class="home-rewards-cta">🏆 مشاهده</span>
+        </div>
+
+        <!-- Lessons List -->
+        <div class="card-title" style="margin-top: 10px;">
+          <span>📚</span>
+          <h3>فهرست درس‌های رسمی کتاب</h3>
+        </div>
+        <div id="dash-lessons-list"></div>
+
+        <!-- Backup and restore -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px; margin-top: 10px;">
+          <h4 style="font-size: 13px; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">پشتیبان‌گیری و بازیابی</h4>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">از پیشرفت مطالعه نسخهٔ پشتیبان بگیرید یا آن را بازیابی کنید.</p>
+          <div class="teacher-tools-row" style="display: flex; flex-wrap: wrap; gap: 12px 8px;">
+            <button class="setting-chip" onclick="exportProgress()">💾 ذخیرهٔ پشتیبان</button>
+            <button class="setting-chip" onclick="triggerImportBackup()">📥 بازیابی پشتیبان</button>
+          </div>
+          <input type="file" id="backup-file-input" accept=".json,application/json" style="display: none;" onchange="handleBackupFileSelected(event)">
+        </div>
+      </section>
+
+      <!-- ==================== TAB 2: LEITNER FLASHCARDS ==================== -->
+      <section id="view-leitner" class="tab-view">
+        <div class="leitner-toolbar">
+          <select id="leitner-lesson-select" class="select-native" onchange="onFilterChange()"></select>
+          <div class="leitner-stat-group">
+            <button class="setting-chip" id="chip-active-recall-btn" onclick="toggleActiveRecall()" title="تغییر وضعیت یادآوری چهارگزینه‌ای" style="padding: 5px 8px; font-size: 12px; white-space: nowrap; flex-shrink: 0;">
+              🧠 ۴گزینه‌ای
+            </button>
+            <button class="setting-chip" id="chip-en-only-btn" onclick="toggleEnglishOnly()" title="فقط انگلیسی: تعریف انگلیسی به جای معنی فارسی؛ معنی فارسی با یک لمس دیده می‌شود (پایهٔ یازدهم و دوازدهم)" aria-pressed="false" style="display: none; padding: 5px 8px; font-size: 12px; white-space: nowrap; flex-shrink: 0;">🔤 فقط EN</button>
+            <span class="counter-badge" id="card-index-display">۱ از ۵۰</span>
+          </div>
+        </div>
+
+        <div id="card-empty-msg" style="display: none; text-align: center; padding: 30px 10px;">
+          <p style="font-size: 13px; color: var(--text-muted);">هیچ کارتی برای فیلتر انتخابی موجود نیست.</p>
+          <button class="setting-chip active" onclick="resetLeitnerFilterToAll()" style="margin-top: 10px;">نمایش همهٔ کارت‌های این پایه</button>
+        </div>
+
+        <!-- Session Complete Summary Card -->
+        <div id="card-session-complete" class="session-summary-card" style="display: none;">
+          <div style="font-size: 44px; margin-bottom: 6px;">🎉</div>
+          <h3 style="font-size: 18px; font-weight: 900; color: var(--emerald-dark); margin-bottom: 4px;">جلسهٔ مرور با موفقیت تکمیل شد!</h3>
+          <p style="font-size: 12px; color: var(--text-muted);">
+            تمامی کارت‌های موعددار این جلسه با الگوریتم علمی لایتنر (SM-2) مرور و تثبیت شدند.
+          </p>
+
+          <div class="session-summary-metrics">
+            <div class="session-metric-box">
+              <div class="session-metric-val" id="session-stat-cards">۰</div>
+              <div class="session-metric-lbl">کارت‌های مرورشده</div>
+            </div>
+            <div class="session-metric-box">
+              <div class="session-metric-val" id="session-stat-accuracy">۱۰۰٪</div>
+              <div class="session-metric-lbl">دقت در دور اول</div>
+            </div>
+            <div class="session-metric-box">
+              <div class="session-metric-val" id="session-stat-retries">۰</div>
+              <div class="session-metric-lbl">تکرارهای حل‌شده</div>
+            </div>
+            <div class="session-metric-box">
+              <div class="session-metric-val" id="session-stat-gems">+۰ 💎</div>
+              <div class="session-metric-lbl">الماس‌های کسب‌شده</div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 8px; justify-content: center; margin-top: 14px;">
+            <button class="hero-cta-btn" onclick="switchTab('home')" style="padding: 10px 18px;">
+              🏠 بازگشت به پیشخوان
+            </button>
+            <button class="setting-chip active" onclick="onFilterChange()" style="padding: 10px 18px; font-size: 12px;">
+              🔄 مرور آزاد درس‌ها
+            </button>
+          </div>
+        </div>
+
+        <div id="card-active-content">
+
+          <!-- 3D Flippable Flashcard -->
+          <div class="card-flipper-container" onclick="flipCard()">
+            <div class="card-flipper" id="card-flipper-element">
+
+              <!-- FRONT SIDE: Context-First -->
+              <div class="flipper-face face-front">
+                <div class="face-header">
+                  <div style="display: flex; gap: 4px; align-items: center; flex-wrap: wrap;">
+                    <span class="chip-page" id="card-front-tag">درس ۱ • ص ۱۹</span>
+                    <span id="card-front-source-tag" class="source-tag source-book">کتاب رسمی</span>
+                    <span id="card-front-review-badge" class="review-badge" style="display: none;">⚠️ نیازمند بازبینی</span>
+                    <span id="card-front-leech-badge" class="leech-badge" style="display: none;">⚠️ واژهٔ پرخطا</span>
+                  </div>
+                  <span id="card-front-pos" class="pos-tag pos-noun">اسم (Noun)</span>
+                </div>
+
+                <div class="face-center">
+                  <!-- Verified Dual-Coding Illustration -->
+                  <div class="card-illustration-box" id="card-front-img-wrap">
+                    <img id="card-front-img" src="img/vocab/endangered.webp" alt="Illustration" class="card-illustration-img">
+                  </div>
+
+                  <div class="term-title-row" dir="ltr">
+                    <span class="term-title" id="card-front-word">endangered</span>
+                    <button type="button" class="inline-word-speaker" onclick="event.stopPropagation(); speakCurrentCardWord();" title="شنیدن تلفظ واژه" aria-label="شنیدن تلفظ واژه">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+                    </button>
+                  </div>
+                  <div class="term-phonetic" id="card-front-phonetic" dir="ltr">/ɪnˈdeɪndʒərd/</div>
+
+                  <!-- In-Context Sentence -->
+                  <div class="sentence-preview-box" id="card-front-sentence-preview">
+                    The Iranian cheetah is an <span class="highlighted-term">endangered</span> animal.
+                  </div>
+
+                  <!-- Active Recall Panel -->
+                  <div id="card-front-recall-wrap" class="active-recall-panel" style="display: none;" onclick="event.stopPropagation();">
+                    <div class="recall-prompt-lbl">🧠 معنی واژه را قبل از چرخش کارت انتخاب کنید:</div>
+                    <div id="card-front-recall-choices" class="recall-choices-grid"></div>
+                  </div>
+                </div>
+
+                <div class="face-footer">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <button class="sentence-audio-action" onclick="event.stopPropagation(); speakCurrentCardSentence();">
+                      <span>🔊 شنیدن جملهٔ کامل</span>
+                    </button>
+                    <span style="font-size: 12px; color: var(--text-faint);">حدس در بافتار متن</span>
+                  </div>
+                  <div class="tap-prompt">👆 معنی را در بافت جمله حدس بزنید، سپس کارت را لمس کنید</div>
+                </div>
+              </div>
+
+              <!-- BACK SIDE: Meaning & Verification -->
+              <div class="flipper-face face-back">
+                <div class="face-header">
+                  <span class="chip-page" id="card-back-tag">جعبهٔ ۱</span>
+                  <button class="sentence-audio-action" onclick="event.stopPropagation(); speakCurrentCardWord();">🔊 تلفظ واژه</button>
+                </div>
+
+                <div style="display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 8px;">
+                  <img id="card-back-img" src="img/vocab/endangered.webp" alt="Illustration" class="card-illustration-img mini">
+                  <div>
+                    <div style="font-size: 12px; color: var(--text-muted); text-align: right;" id="card-back-meaning-lbl">معنی رسمی فارسی:</div>
+                    <div class="card-back-def" id="card-back-def" dir="ltr" style="display: none;"></div>
+                    <div class="meaning-title" id="card-back-meaning">در معرض خطر انقراض</div>
+                    <button type="button" class="fa-reveal-chip" id="card-back-fa-reveal" style="display: none;" onclick="event.stopPropagation(); revealCardPersian();">👁 نمایش معنی فارسی</button>
+                  </div>
+                </div>
+                <div class="rel-box" id="card-back-rel" style="display: none;"></div>
+
+                <div class="sentence-box-back">
+                  <div class="sentence-box-label">
+                    <span id="card-back-ex-label">📌 جملهٔ نمونه:</span>
+                    <button class="sentence-audio-action" onclick="event.stopPropagation(); speakCurrentCardSentence();">🔊 شنیدن جمله</button>
+                  </div>
+                  <div class="sentence-text-back" id="card-back-sentence">
+                    The Iranian cheetah is an <span class="highlighted-term">endangered</span> animal.
+                  </div>
+                </div>
+
+                <div class="book-source-tag" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+                  <span id="card-back-ref-text">📖 کتاب رسمی دهم (Vision 1) • صفحهٔ ۱۹</span>
+                  <span id="card-back-review-badge" class="review-badge" style="display: none;">⚠️ شمارهٔ صفحه نیاز به بازبینی دبیر دارد</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Pre-Flip Action Prompt (when not yet flipped) -->
+          <div class="card-flip-cta-wrap" id="card-flip-cta-wrap">
+            <button type="button" class="card-flip-cta-btn" id="card-flip-cta-btn" onclick="flipCard()">
+              🔄 چرخش کارت و مشاهدهٔ معنی فارسی
+            </button>
+          </div>
+
+          <!-- 4-Grade SM-2 SRS Response Drawer (Smoothly slides down when card flips!) -->
+          <div class="srs-reveal-drawer" id="srs-reveal-drawer">
+            <div class="srs-drawer-caption" id="srs-drawer-caption">📊 میزان تسلط خود را ثبت کنید:</div>
+            <div class="srs-4button-row">
+              <button class="srs-btn btn-again" id="srs-btn-again" onclick="answerSRS('again')">
+                <span class="srs-btn-title">❌ دوباره</span>
+                <span class="srs-btn-time" id="srs-time-again">۱۰ دقیقه</span>
+              </button>
+              <button class="srs-btn btn-hard" id="srs-btn-hard" onclick="answerSRS('hard')">
+                <span class="srs-btn-title">⚠️ سخت</span>
+                <span class="srs-btn-time" id="srs-time-hard">۱ روز</span>
+              </button>
+              <button class="srs-btn btn-good" id="srs-btn-good" onclick="answerSRS('good')">
+                <span class="srs-btn-title">✅ خوب</span>
+                <span class="srs-btn-time" id="srs-time-good">۳ روز</span>
+              </button>
+              <button class="srs-btn btn-easy" id="srs-btn-easy" onclick="answerSRS('easy')">
+                <span class="srs-btn-title">⚡ آسان</span>
+                <span class="srs-btn-time" id="srs-time-easy">۷ روز</span>
+              </button>
+            </div>
+
+        </div>
+          <!-- v3.11: Prev / Bookmark / Next moved under the card -->
+          <div class="card-nav-row" id="card-free-nav-row">
+            <button class="card-step-btn" onclick="stepCard(-1)">➡️ کارت قبلی</button>
+            <button class="star-bookmark-btn" id="card-star-btn" onclick="toggleCurrentCardStar()" title="نشان‌گذاری واژهٔ مهم">☆</button>
+            <button class="card-step-btn" onclick="stepCard(1)">کارت بعدی ⬅️</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 3: CONTEXTUAL SENTENCES ==================== -->
+      <section id="view-context" class="tab-view">
+        <div class="reader-intro-banner">
+          <span style="font-size: 22px;">💡</span>
+          <div>
+            <strong style="font-size: 13px; color: var(--accent-text);">جمله‌های درس در بافتار متن (Contextual Sentences):</strong>
+            <p style="margin: 0; font-size: 12px; color: var(--text-muted);">
+              روی هر واژهٔ سبز بزنید تا معنی و تصویرش باز شود، روی واژه‌های دیگر بزنید تا تلفظ همان واژه را بشنوید، و با دکمهٔ 🔊 کل جمله را بشنوید.
+            </p>
+          </div>
+        </div>
+        <div id="context-reader-list"></div>
+      </section>
+
+      <!-- ==================== TAB 4: FORMATIVE QUIZ & CREATIVE GAMES ==================== -->
+      <section id="view-quiz" class="tab-view">
+        <div class="quiz-filter-row">
+          <select id="quiz-lesson-select" class="select-native" onchange="onQuizLessonFilterChange()" aria-label="درس آزمون"></select>
+        </div>
+
+        <!-- v3.11 (F17): one compact grid — row 1 text quizzes, row 2 games (was two labelled panels that pushed the question below the fold) -->
+        <div class="quiz-mode-grid" id="quiz-mode-grid">
+          <div class="qm-row">
+            <button type="button" class="mode-tab-btn qm-tile active" id="quiz-mode-mc" onclick="setQuizMode('mc')" aria-pressed="true"><span class="c-ico" aria-hidden="true">🎯</span><span class="qm-lbl">۴گزینه‌ای</span></button>
+            <button type="button" class="mode-tab-btn qm-tile" id="quiz-mode-type" onclick="setQuizMode('type')" aria-pressed="false"><span class="c-ico" aria-hidden="true">⌨️</span><span class="qm-lbl">تایپ واژه</span></button>
+            <button type="button" class="mode-tab-btn qm-tile" id="quiz-mode-dictation" onclick="setQuizMode('dictation')" aria-pressed="false"><span class="c-ico" aria-hidden="true">🎧</span><span class="qm-lbl">املا</span></button>
+            <button type="button" class="mode-tab-btn qm-tile" id="quiz-mode-mixed" onclick="setQuizMode('mixed')" aria-pressed="false"><span class="c-ico" aria-hidden="true">🔀</span><span class="qm-lbl">ترکیبی هوشمند</span></button>
+            <button type="button" class="mode-tab-btn qm-tile" id="quiz-mode-rel" onclick="setQuizMode('rel')" aria-pressed="false" style="display: none;"><span class="c-ico" aria-hidden="true">🔁</span><span class="qm-lbl">مترادف و متضاد</span></button>
+          </div>
+          <div class="qm-row">
+            <button type="button" class="creative-tab-btn qm-tile" id="quiz-mode-pic4" onclick="setQuizMode('pic4')" aria-pressed="false"><span class="c-ico" aria-hidden="true">🖼️</span><span class="qm-lbl">تصویرخوان</span></button>
+            <button type="button" class="creative-tab-btn qm-tile" id="quiz-mode-match" onclick="setQuizMode('match')" aria-pressed="false"><span class="c-ico" aria-hidden="true">🧩</span><span class="qm-lbl">جفت‌سازی</span></button>
+            <button type="button" class="creative-tab-btn qm-tile" id="quiz-mode-scramble" onclick="setQuizMode('scramble')" aria-pressed="false"><span class="c-ico" aria-hidden="true">🔤</span><span class="qm-lbl">حروف‌چین</span></button>
+            <button type="button" class="creative-tab-btn qm-tile" id="quiz-mode-blitz" onclick="setQuizMode('blitz')" aria-pressed="false"><span class="c-ico" aria-hidden="true">⚡</span><span class="qm-lbl">سرعتی</span></button>
+            <button type="button" class="creative-tab-btn qm-tile" id="quiz-mode-order" onclick="setQuizMode('order')" aria-pressed="false"><span class="c-ico" aria-hidden="true">🧱</span><span class="qm-lbl">مرتب‌سازی جمله</span></button>
+          </div>
+        </div>
+
+        <!-- Creative Games Stage -->
+        <div id="quiz-creative-stage" style="display: none;"></div>
+
+        <!-- Empty State (Separate container so #quiz-box-card DOM is never destroyed!) -->
+        <div id="quiz-empty-area" class="quiz-card-surface" style="display: none; text-align: center; padding: 24px 12px;">
+          <p id="quiz-empty-text" style="font-size: 13px; color: var(--text-muted);">تعداد واژگان این فیلتر برای آزمون کافی نیست. لطفاً درس دیگری را انتخاب کنید.</p>
+        </div>
+
+        <!-- Final Score Card (Separate container so Retake Quiz works 100% cleanly!) -->
+        <div id="quiz-result-area" class="quiz-card-surface" style="display: none; text-align: center; padding: 22px 12px;">
+          <div style="font-size: 46px; margin-bottom: 8px;">🏆</div>
+          <h3 id="quiz-result-title" style="font-size: 17px; margin-bottom: 4px; color: var(--emerald);">کارنامهٔ آزمون</h3>
+          <p id="quiz-result-score" style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;"></p>
+          <div id="quiz-weak-area"></div>
+          <button class="hero-cta-btn" onclick="initQuiz()" style="margin: 0 auto;">
+            🔄 آزمون مجدد با سؤال‌های تازه
+          </button>
+        </div>
+
+        <!-- Active Quiz Surface -->
+        <div id="quiz-play-area">
+          <div class="quiz-card-surface" id="quiz-box-card">
+            <div class="quiz-card-head">
+              <span id="quiz-step-text" class="quiz-step-lbl">سؤال ۱ از ۶</span>
+              <span id="quiz-tag-badge" class="chip-page quiz-ref-chip">📖 درس ۱ • ص ۱۹</span>
+            </div>
+            <div class="quiz-media-row">
+              <div class="quiz-prompt-en" id="quiz-prompt-en">The Iranian cheetah is an [ __________ ] animal.</div>
+              <div class="quiz-img-box" id="quiz-word-img-wrap">
+                <img id="quiz-word-img" src="img/vocab/endangered.webp" alt="" class="card-illustration-img">
+              </div>
+            </div>
+            <div class="quiz-prompt-fa" id="quiz-prompt-fa">کدام واژه جای خالی را کامل می‌کند؟</div>
+
+            <!-- Dictation Audio Controls (Mode 3) -->
+            <div id="quiz-dictation-audio-wrap" class="dictation-audio-box" style="display: none;">
+              <button type="button" class="dictation-play-btn" onclick="playDictationWord(false)">
+                🔊 پخش تلفظ واژه
+              </button>
+              <button type="button" class="dictation-slow-btn" onclick="playDictationWord(true)">
+                🐢 پخش شمرده
+              </button>
+            </div>
+
+            <!-- Mode 1: Multiple Choice Options -->
+            <div id="quiz-mc-wrap">
+              <div class="mc-options-wrapper" id="quiz-options-wrap"></div>
+            </div>
+
+            <!-- Mode 2 & 3: Type / Dictation Input -->
+            <div id="quiz-type-wrap" style="display: none;">
+              <div class="type-quiz-container">
+                <input type="text" id="type-word-input" class="type-input-field" placeholder="املای انگلیسی واژه را تایپ کنید..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="if(event.key==='Enter'){submitTypeQuiz();}">
+
+                <div class="hint-bar">
+                  <button type="button" class="hint-trigger-btn" onclick="toggleTypeHint()">
+                    <span>💡 راهنما (Hint)</span>
+                  </button>
+                  <button type="button" class="type-submit-btn" onclick="submitTypeQuiz()" style="padding: 8px 16px; font-size: 12px;">
+                    ثبت و ارزیابی
+                  </button>
+                </div>
+
+                <div id="hint-bubble-display" class="hint-bubble">
+                  حرف اول: «e» • طول واژه: ۱۰ حرف
+                </div>
+              </div>
+            </div>
+
+            <div class="quiz-feedback-box" id="quiz-feedback-box"></div>
+            <button class="quiz-next-action" id="quiz-next-action-btn" onclick="nextQuiz()">سؤال بعدی ⬅️</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 5: GLOSSARY SEARCH ==================== -->
+      <section id="view-glossary" class="tab-view">
+        <div class="glossary-search-header">
+          <input type="text" id="glossary-input" placeholder="جستجوی واژهٔ انگلیسی یا معنی فارسی..." oninput="onSearchGlossary()">
+          <button class="setting-chip" id="glossary-star-filter-btn" onclick="toggleGlossaryStarFilter()" style="padding: 6px 10px; font-size: 12px; flex-shrink: 0;">⭐ نشان‌شده</button>
+          <span class="chip-page" id="glossary-count">۵۰ واژه</span>
+        </div>
+        <div id="glossary-list"></div>
+      </section>
+
+      <!-- ==================== TAB 6: ACADEMIC CREDITS & CREATOR ==================== -->
+      <section id="view-about" class="tab-view">
+        <div class="academic-cert-card">
+          <div class="hero-shimmer"></div>
+
+          <!-- Official Farhangian University Calligraphic Crest (Inline Vector SVG) -->
+          <div class="cfu-crest-badge" title="دانشگاه فرهنگیان">
+            <svg width="64" height="81" viewBox="0 0 930 1182" xmlns="http://www.w3.org/2000/svg" aria-label="دانشگاه فرهنگیان">
+              <g transform="translate(0,1182) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M4555 11468 c-27 -5 -73 -16 -101 -24 -28 -8 -61 -14 -74 -14 -12 0 -45 -7 -74 -16 -28 -9 -71 -22 -96 -30 -25 -8 -54 -14 -65 -14 -11 0 -33 -7 -49 -15 -15 -8 -36 -15 -46 -15 -9 0 -48 -12 -86 -26 -38 -14 -84 -29 -103 -34 -18 -5 -38 -13 -44 -19 -6 -6 -19 -11 -28 -11 -10 0 -30 -6 -46 -14 -15 -8 -48 -22 -73 -31 -25 -10 -60 -24 -77 -32 -18 -7 -50 -21 -70 -30 -21 -9 -45 -20 -53 -25 -8 -4 -22 -11 -30 -14 -16 -7 -146 -70 -170 -83 -8 -4 -24 -13 -35 -19 -11 -7 -27 -15 -35 -19 -16 -7 -216 -127 -256 -153 -340 -224 -575 -442 -797 -737 -42 -56 -77 -104 -77 -107 0 -3 -19 -33 -42 -68 -58 -86 -131 -224 -185 -348 -8 -19 -22 -47 -29 -62 -8 -14 -14 -34 -14 -45 0 -10 -7 -27 -15 -37 -8 -11 -15 -30 -15 -42 0 -13 -4 -25 -9 -29 -5 -3 -12 -20 -16 -38 -4 -17 -13 -52 -20 -77 -35 -113 -65 -261 -90 -432 -17 -118 -22 -613 -6 -622 5 -3 44 3 87 13 125 30 307 45 471 38 l145 -7 -7 85 c-15 178 32 564 87 720 6 17 13 44 16 60 2 17 11 39 18 50 8 11 14 27 14 36 0 10 6 30 14 46 7 15 20 44 29 63 88 203 218 394 396 583 125 132 408 351 566 436 22 12 67 38 100 56 80 46 135 72 310 149 17 8 50 21 75 31 25 9 59 22 75 29 40 17 93 36 130 46 17 5 50 16 75 25 24 9 67 22 95 30 27 7 95 26 150 41 133 36 217 36 350 0 55 -15 123 -34 150 -41 28 -8 71 -21 95 -30 25 -9 59 -20 75 -25 37 -10 90 -29 130 -46 17 -7 66 -27 110 -45 143 -57 257 -111 350 -164 33 -18 78 -44 100 -56 158 -85 441 -304 566 -436 178 -189 308 -380 396 -583 9 -19 22 -48 29 -63 8 -16 14 -36 14 -46 0 -9 6 -25 14 -36 7 -11 16 -33 18 -50 3 -16 10 -43 16 -60 55 -156 102 -542 87 -720 l-7 -85 136 7 c155 7 371 -10 485 -38 40 -10 77 -16 82 -13 16 9 11 504 -6 622 -25 171 -55 319 -90 432 -7 25 -16 60 -20 77 -4 18 -11 35 -16 38 -5 4 -9 16 -9 29 0 12 -7 31 -15 42 -8 10 -15 27 -15 37 0 11 -6 31 -14 45 -7 15 -21 43 -29 62 -54 124 -127 262 -184 348 -24 35 -43 65 -43 68 0 9 -152 208 -214 279 -147 171 -381 377 -579 511 -94 63 -99 66 -218 137 -63 37 -121 72 -129 77 -8 6 -22 13 -30 16 -8 3 -22 9 -30 14 -8 5 -49 26 -90 45 -41 20 -82 41 -90 46 -8 5 -22 12 -30 15 -8 3 -31 12 -50 21 -63 27 -94 40 -140 58 -25 9 -58 23 -73 31 -16 8 -36 14 -46 14 -9 0 -22 5 -28 11 -6 6 -26 14 -44 19 -19 5 -65 20 -104 33 -67 24 -120 39 -242 73 -32 8 -79 22 -104 30 -26 7 -57 14 -69 14 -13 0 -46 6 -74 14 -125 35 -198 41 -291 24z"/> <path d="M4570 9274 c-61 -5 -156 -33 -205 -61 -22 -13 -49 -27 -61 -32 -62 -28 -175 -157 -228 -261 -76 -149 -77 -380 -1 -540 35 -75 50 -95 122 -171 129 -135 285 -196 479 -186 122 6 161 15 244 56 96 47 101 51 165 111 218 206 260 546 99 795 -136 210 -348 310 -614 289z"/> <path d="M2975 8589 c-136 -91 -249 -231 -319 -392 -9 -21 -16 -45 -16 -55 0 -9 -7 -35 -15 -57 -17 -48 -20 -231 -4 -290 6 -22 14 -56 18 -75 9 -40 55 -138 88 -189 29 -42 29 -49 1 -61 -32 -14 -54 -28 -131 -87 -164 -124 -239 -303 -208 -491 13 -77 67 -206 86 -206 6 0 21 28 36 63 36 92 84 144 154 165 50 16 67 17 175 5 162 -17 213 -5 284 66 32 32 58 71 71 103 11 29 24 52 30 52 6 0 19 -39 28 -87 18 -91 19 -85 -12 -233 -4 -19 -20 -62 -36 -95 -96 -205 -303 -335 -532 -335 -249 0 -452 150 -553 410 -22 57 -25 261 -4 324 45 135 132 258 231 325 49 33 150 81 172 81 34 0 51 11 51 34 0 13 -3 26 -7 30 -32 31 -65 192 -70 333 -4 132 -4 132 -71 139 -132 15 -602 8 -652 -10 -25 -8 -53 -16 -62 -16 -10 0 -33 -8 -53 -17 -35 -17 -35 -17 -35 -652 1 -528 3 -643 15 -676 8 -22 15 -48 15 -58 0 -40 92 -227 151 -307 70 -96 261 -270 296 -270 3 0 14 -6 22 -13 18 -15 141 -66 216 -90 92 -29 260 -42 381 -28 317 36 575 199 741 466 24 40 83 161 83 173 0 6 6 26 14 44 62 143 61 452 -1 623 -18 50 -42 105 -54 125 -5 8 -13 25 -19 37 -27 63 -112 171 -193 245 -120 110 -197 188 -197 199 0 6 -9 22 -20 37 -45 61 -89 224 -92 337 -2 98 30 261 69 352 31 74 13 79 -72 22z"/> <path d="M6945 8070 c-77 -5 -156 -13 -175 -19 -19 -6 -55 -11 -80 -11 -25 0 -74 -6 -110 -14 -36 -8 -101 -22 -145 -31 -44 -9 -102 -22 -130 -30 -27 -7 -68 -17 -90 -23 -82 -20 -191 -54 -218 -68 -16 -8 -39 -14 -51 -14 -12 0 -31 -7 -42 -15 -10 -8 -27 -15 -36 -15 -10 0 -34 -7 -55 -16 -21 -9 -51 -22 -68 -29 -16 -7 -55 -23 -85 -35 -75 -30 -162 -69 -180 -81 -8 -5 -22 -12 -30 -15 -8 -3 -22 -10 -30 -15 -8 -5 -22 -12 -30 -15 -27 -11 -34 -14 -92 -47 -190 -107 -430 -272 -520 -356 -38 -35 -38 -35 -38 -448 0 -415 2 -439 34 -399 25 31 357 268 406 290 8 3 29 15 45 26 17 11 39 24 50 30 19 9 27 14 73 40 9 6 24 13 32 16 8 3 20 8 25 10 6 2 18 8 28 14 56 32 153 79 247 118 19 8 49 20 65 27 17 7 39 15 50 18 11 3 45 15 75 27 30 12 69 25 85 30 17 5 46 14 65 21 19 6 51 17 70 24 35 13 95 29 160 44 19 5 58 14 85 21 181 44 249 58 350 70 39 5 88 12 111 15 37 6 42 5 47 -16 4 -13 7 -441 7 -951 0 -915 0 -928 -20 -948 -13 -13 -33 -20 -57 -20 -21 0 -76 -7 -123 -16 -79 -15 -114 -23 -230 -53 -25 -7 -65 -16 -90 -22 -24 -5 -49 -14 -54 -19 -6 -6 -21 -10 -34 -10 -13 0 -33 -5 -45 -12 -12 -6 -35 -15 -52 -19 -16 -4 -55 -17 -85 -29 -30 -12 -66 -25 -80 -29 -14 -5 -53 -20 -85 -35 -33 -15 -76 -34 -95 -43 -19 -8 -42 -19 -50 -24 -8 -5 -22 -12 -30 -15 -8 -3 -22 -10 -30 -15 -8 -5 -21 -11 -27 -14 -27 -10 -39 -16 -58 -28 -11 -7 -47 -27 -80 -46 -140 -80 -304 -195 -439 -305 -28 -23 -116 -106 -198 -186 -148 -145 -148 -145 -148 -268 0 -108 2 -123 18 -128 115 -36 221 -182 221 -304 0 -122 -106 -268 -221 -304 -17 -5 -18 -28 -18 -305 0 -190 4 -301 10 -303 5 -1 37 -1 71 2 66 5 70 10 98 115 5 17 13 41 19 55 5 14 18 45 27 70 22 57 45 111 57 130 4 8 11 22 14 30 3 8 9 22 14 30 5 8 20 35 32 60 13 25 42 73 65 108 24 35 43 65 43 68 0 20 170 222 276 328 108 108 320 283 374 310 17 8 35 19 95 57 36 23 252 130 330 164 55 23 163 62 210 75 17 5 44 13 60 18 274 92 779 151 1052 124 39 -4 76 -6 82 -4 8 3 11 500 11 1760 0 1757 0 1757 -38 1773 -106 47 -395 67 -697 49z"/> <path d="M3210 7888 c0 -7 65 -75 144 -152 142 -140 185 -195 244 -311 57 -114 60 -121 106 -302 21 -84 25 -2233 4 -2233 -7 1 -31 12 -53 25 -22 14 -47 27 -55 31 -8 3 -22 10 -30 15 -8 5 -22 12 -30 15 -8 4 -40 18 -70 31 -120 54 -137 61 -180 78 -25 9 -58 23 -73 31 -16 8 -34 14 -42 14 -7 0 -26 7 -41 15 -16 8 -37 15 -47 15 -9 0 -25 4 -35 10 -23 13 -98 40 -142 50 -19 4 -48 12 -65 18 -252 83 -774 163 -1072 162 l-153 0 0 -454 c0 -326 3 -455 11 -458 6 -2 41 0 78 4 135 15 248 10 561 -22 112 -11 289 -45 400 -76 30 -9 80 -23 110 -31 30 -9 70 -22 88 -29 18 -8 39 -14 47 -14 7 0 26 -6 42 -14 15 -8 46 -21 68 -29 65 -24 69 -26 85 -36 8 -5 62 -32 120 -60 123 -61 112 -55 254 -150 187 -125 347 -269 497 -448 68 -81 173 -230 192 -273 4 -8 16 -28 26 -45 19 -30 79 -149 107 -215 9 -19 22 -48 30 -63 8 -16 14 -36 14 -46 0 -9 7 -26 15 -37 8 -10 15 -29 15 -40 0 -12 9 -42 20 -67 20 -45 20 -45 81 -49 37 -2 64 1 70 8 5 7 8 135 7 305 -3 294 -3 294 -27 297 -34 5 -107 63 -145 114 -87 118 -86 256 2 379 32 45 104 99 146 109 21 6 21 6 24 1617 l2 1611 -59 49 c-32 26 -71 59 -87 71 -32 26 -270 185 -294 196 -15 7 -26 14 -95 56 -22 14 -60 36 -85 48 -25 13 -52 27 -60 32 -14 8 -110 52 -187 86 -18 8 -48 20 -65 28 -88 39 -107 46 -120 46 -7 0 -22 7 -32 15 -11 8 -29 15 -41 15 -12 0 -30 7 -41 15 -10 8 -29 15 -42 15 -12 0 -33 6 -45 14 -30 19 -97 28 -97 14z"/> <path d="M4140 2307 c-97 -94 -209 -195 -291 -264 -25 -21 -66 -55 -90 -75 -47 -39 -94 -76 -309 -243 -233 -181 -256 -200 -291 -234 -19 -19 -38 -42 -44 -52 -49 -87 -56 -102 -46 -112 7 -7 16 -5 29 6 10 9 22 17 26 17 6 0 77 50 112 79 6 5 35 26 65 47 30 21 56 41 59 44 3 4 41 34 85 68 44 34 112 88 152 119 39 32 100 80 135 107 35 27 70 57 79 65 9 9 37 34 64 56 114 95 143 121 201 179 59 59 154 191 154 213 0 6 7 16 15 23 18 15 20 50 3 50 -7 0 -56 -42 -108 -93z"/> <path d="M3940 2228 c-35 -27 -67 -52 -70 -56 -3 -4 -38 -36 -77 -71 -67 -58 -89 -91 -62 -91 13 0 167 118 227 174 91 85 78 117 -18 44z"/> <path d="M6173 2082 c-19 -32 -343 -325 -456 -413 -76 -60 -301 -235 -417 -325 -47 -36 -107 -85 -134 -110 -27 -24 -53 -44 -58 -44 -16 0 2 157 38 320 19 87 19 140 -1 140 -8 0 -15 -6 -15 -14 0 -8 -6 -27 -14 -43 -45 -92 -65 -157 -76 -248 -4 -33 -13 -89 -19 -125 -39 -221 -44 -266 -45 -410 0 -140 2 -159 21 -193 36 -64 57 -77 132 -77 64 0 68 1 118 46 29 25 59 57 67 72 40 74 61 123 92 212 25 72 33 76 85 38 117 -88 239 -118 469 -118 206 1 359 25 500 80 30 12 66 25 80 30 14 4 54 24 90 44 36 19 74 40 85 46 11 6 34 19 50 30 17 11 37 23 45 27 30 13 176 129 239 188 105 99 210 253 211 309 0 12 7 30 15 40 8 11 15 32 15 47 0 14 7 46 15 69 33 93 8 136 -34 58 -12 -24 -33 -61 -47 -83 -13 -22 -24 -51 -24 -65 -1 -40 -33 -123 -60 -153 -32 -37 -210 -169 -265 -197 -11 -6 -42 -24 -70 -40 -110 -66 -238 -119 -350 -146 -252 -59 -543 -62 -800 -8 -38 8 -82 14 -96 14 -15 0 -43 7 -62 15 -20 8 -52 15 -72 15 -19 0 -54 4 -77 10 -24 5 -60 12 -80 15 -24 4 -38 11 -38 20 0 8 4 15 9 15 11 0 271 196 356 268 11 9 43 35 70 57 28 22 57 46 66 55 9 8 47 40 84 70 178 144 268 236 341 346 62 95 76 134 47 134 -10 0 -23 -8 -30 -18z m-926 -1087 c37 -12 57 -25 72 -48 19 -30 19 -32 1 -66 -25 -49 -66 -71 -132 -71 -44 0 -59 4 -75 23 -47 51 -55 96 -24 137 19 24 75 50 96 44 6 -1 33 -10 62 -19z"/> <path d="M6422 2088 c-25 -31 -62 -109 -62 -131 0 -15 13 -34 36 -53 65 -51 64 -51 106 -3 33 39 38 50 38 96 0 44 -4 56 -27 78 -30 27 -74 33 -91 13z"/> <path d="M3294 2003 c-31 -42 -76 -143 -71 -158 9 -21 96 -75 122 -75 15 0 32 11 47 32 64 89 64 122 3 183 -52 52 -73 56 -101 18z"/> <path d="M4288 1973 c-72 -119 -72 -143 -4 -185 65 -42 87 -37 134 29 36 51 31 116 -12 159 -48 48 -88 47 -118 -3z"/> <path d="M5924 1952 c-16 -15 -49 -43 -74 -62 -80 -60 -177 -164 -157 -168 10 -2 33 8 50 22 18 14 59 47 92 73 75 58 157 142 149 154 -9 16 -30 10 -60 -19z"/> <path d="M6870 1898 c-6 -13 -22 -43 -36 -68 -29 -52 -29 -99 1 -115 11 -6 32 -18 47 -28 39 -27 68 -18 105 31 48 63 46 115 -4 165 -44 45 -97 52 -113 15z"/> <path d="M6533 1891 c-13 -11 -23 -22 -23 -26 0 -3 -10 -19 -22 -35 -22 -30 -22 -30 -52 -1 -59 55 -76 58 -106 21 -33 -43 -80 -127 -80 -145 0 -8 17 -27 38 -42 20 -15 39 -31 40 -35 2 -5 17 -8 33 -8 23 0 36 10 65 50 38 53 38 53 96 8 44 -34 59 -30 107 31 48 60 45 128 -6 170 -43 36 -59 38 -90 12z"/> <path d="M2535 1588 c-41 -77 -41 -79 -59 -133 -11 -35 -16 -88 -17 -175 -1 -175 -27 -245 -133 -352 -105 -105 -209 -150 -350 -150 -93 0 -133 12 -199 56 -82 55 -90 204 -20 374 28 69 45 108 59 135 16 32 19 67 5 67 -4 0 -25 -28 -45 -62 -21 -35 -42 -70 -47 -78 -5 -8 -12 -22 -15 -30 -4 -8 -18 -39 -31 -69 -45 -97 -56 -150 -60 -298 -4 -142 -4 -142 27 -202 45 -84 111 -127 212 -136 183 -18 355 63 477 225 56 73 151 253 151 285 0 9 5 25 10 36 20 36 44 166 65 339 26 227 26 220 11 220 -8 0 -26 -23 -41 -52z"/> <path d="M2726 1533 c-3 -10 -9 -25 -14 -33 -34 -58 -72 -176 -72 -224 0 -21 -6 -73 -14 -115 -19 -101 -41 -320 -40 -401 3 -232 205 -296 339 -107 93 132 85 126 175 124 75 -2 80 0 109 27 17 17 31 33 31 37 0 5 11 25 25 45 14 20 30 54 35 75 13 46 38 64 61 43 9 -8 33 -17 52 -21 34 -5 40 -1 103 61 66 65 69 66 121 66 59 0 82 18 126 97 46 84 52 88 110 86 78 -4 96 3 113 42 16 39 18 93 4 115 -8 13 -11 13 -26 -1 -11 -12 -27 -15 -54 -12 -50 7 -84 -18 -134 -101 -42 -69 -71 -91 -115 -88 -37 3 -71 -16 -119 -64 -84 -85 -85 -85 -235 -9 -73 36 -139 70 -147 74 -87 49 -89 49 -126 6 -19 -22 -33 -48 -32 -59 3 -16 97 -76 178 -113 66 -30 82 -109 32 -156 -27 -26 -33 -27 -116 -25 -86 3 -88 3 -113 -27 -55 -67 -84 -92 -118 -102 -75 -23 -146 26 -170 118 -16 61 -7 249 20 410 8 47 15 99 15 115 0 16 7 50 14 76 8 25 12 49 9 52 -11 11 -21 6 -27 -11z"/> <path d="M4253 1448 c-11 -13 -30 -48 -42 -78 -13 -30 -27 -59 -32 -64 -5 -6 -9 -31 -9 -57 0 -65 16 -79 90 -79 51 0 58 -3 63 -22 10 -38 -13 -62 -106 -113 -55 -30 -92 -69 -132 -136 -19 -33 -35 -63 -35 -67 -1 -22 -145 -155 -190 -175 -8 -4 -28 -16 -45 -27 -16 -11 -39 -24 -50 -30 -85 -41 -72 -60 40 -60 98 0 129 9 184 52 27 20 31 27 89 143 46 92 73 120 157 165 77 42 83 47 113 95 71 109 92 173 92 276 0 132 -40 199 -120 199 -36 0 -51 -5 -67 -22z"/> <path d="M7333 1398 c-6 -7 -13 -24 -16 -38 -5 -24 -14 -52 -43 -130 -7 -19 -15 -93 -18 -163 -6 -132 -20 -263 -37 -352 -15 -73 -16 -107 -3 -112 6 -2 14 4 17 14 4 10 11 25 16 33 8 14 15 29 55 123 9 21 16 45 16 53 0 8 7 36 15 62 15 49 28 522 14 522 -4 0 -11 -6 -16 -12z"/> <path d="M2090 1378 c-24 -37 -90 -172 -90 -184 0 -11 62 -67 105 -93 31 -20 50 -10 85 46 24 40 30 59 30 110 0 61 -1 62 -46 102 -54 47 -64 49 -84 19z"/> <path d="M7523 1158 c-9 -18 -26 -51 -36 -73 -10 -22 -25 -52 -33 -67 -21 -39 -18 -50 27 -93 52 -51 83 -109 74 -142 -6 -25 -94 -115 -176 -180 -56 -44 -62 -63 -19 -63 87 0 239 115 273 206 10 27 25 61 33 76 20 38 20 221 -1 238 -8 7 -15 18 -15 24 0 12 -91 106 -103 106 -3 0 -14 -15 -24 -32z"/> <path d="M3849 1108 c-49 -47 -110 -152 -138 -239 -36 -113 19 -196 93 -138 37 29 37 99 1 127 -42 33 -33 80 36 187 10 17 22 37 26 45 3 8 11 18 16 21 5 4 8 12 5 19 -2 7 -17 -2 -39 -22z"/> <path d="M4707 1087 c-8 -12 -24 -47 -37 -77 -12 -30 -28 -67 -36 -82 -8 -14 -14 -47 -14 -71 0 -25 -4 -49 -10 -52 -23 -15 -50 -100 -50 -161 0 -77 20 -104 76 -104 72 0 135 60 194 185 31 65 33 78 34 170 0 111 -15 150 -73 193 -38 28 -65 28 -84 -1z m27 -308 c14 -17 26 -35 26 -40 0 -20 -50 -59 -75 -59 -64 0 -81 37 -44 96 27 44 58 45 93 3z"/> <path d="M3448 643 c-14 -16 -28 -36 -31 -45 -9 -26 -50 -22 -77 7 -40 43 -74 34 -114 -27 -70 -110 -70 -112 -34 -148 63 -63 109 -63 153 0 32 47 46 49 91 15 58 -44 93 -29 142 64 26 50 10 103 -42 139 -42 29 -57 28 -88 -5z"/></g>
+            </svg>
+          </div>
+
+          <h2 style="font-size: 20px; font-weight: 900; color: var(--emerald-dark); margin: 4px 0 2px 0;">FarhangLex (فرهنگ‌لکس)</h2>
+          <h3 style="font-size: 13px; color: var(--text-main); font-weight: 800;">دانشگاه فرهنگیان • پردیس شهید بهشتی مشهد</h3>
+          <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
+            گروه آموزش زبان انگلیسی • سامانهٔ هوشمند و آفلاین یادگیری واژگان کتاب‌های درسی
+          </p>
+
+          <div class="roles-grid">
+            <div class="role-tile">
+              <div class="role-lbl">استاد راهنما و ناظر علمی:</div>
+              <div class="role-val">دکتر احمدرضا اقتصادی رودی</div>
+              <div class="role-desc">عضو هیئت علمی دانشگاه فرهنگیان</div>
+            </div>
+            <div class="role-tile">
+              <div class="role-lbl">سازنده و برنامه‌نویس:</div>
+              <div class="role-val">علیرضا تقی‌زاده</div>
+              <div class="role-desc">دانشجوی دانشگاه فرهنگیان شهید بهشتی مشهد</div>
+            </div>
+          </div>
+
+          <div class="pedagogy-box">
+            <p><strong>عنوان درس:</strong> کاربرد رسانه و فناوری اطلاعات در آموزش زبان انگلیسی</p>
+            <p><strong>رویکرد آموزشی:</strong> یادگیری واژگان در بافتار متن رسمی کتاب (Contextualized Vocabulary Acquisition)، الگوریتم علمی تکرار بافاصله (SM-2 Leitner SRS)، کدگذاری دوگانهٔ تصویری (Dual-Coding) و تقویت املای شنیداری.</p>
+            <p id="about-coverage"><strong>پوشش محتوایی:</strong> بانک <span data-cov="words">۳۳۸</span> واژهٔ کلیدی پایه‌های هفتم تا دوازدهم (Prospect 1–3 و Vision 1–3): <span data-cov="book">۲۵۱</span> واژه از کتاب درسی، <span data-cov="workbook">۶۲</span> واژه از کتاب کار و <span data-cov="extra">۲۵</span> واژهٔ تکمیلی؛ همراه با آوانگاری (IPA) آمریکایی و بریتانیایی، گزینه‌های انحرافی استاندارد، <span data-cov="further">۲۹</span> متن Further، مأموریت‌های روزانه، تقویم زنجیره و سپر یخی، <span data-cov="badges">۱۰</span> دستاورد چهارسطحی، <span data-cov="themes">۱۰</span> تم، <span data-cov="modes">۸</span> حالت آزمون و بازی و تلفظ آفلاین.</p>
+          </div>
+
+          <!-- Creator Contact Box -->
+          <div class="creator-contact-card">
+            <div style="font-size: 13px; font-weight: 800; color: var(--emerald-dark);">💬 پذیرای انتقادات و پیشنهادات شما هستیم</div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 3px;">ارتباط مستقیم با سازنده (علیرضا تقی‌زاده):</div>
+            <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+              <button type="button" class="creator-call-pill" id="creator-telegram" onclick="openCreatorTelegram()" aria-label="گفت‌وگو در تلگرام با @TeachSpot">
+                💬 تلگرام <bdi dir="ltr">@TeachSpot</bdi>
+              </button>
+              <button type="button" class="setting-chip" id="copy-creator-telegram" onclick="copyCreatorTelegram()" style="margin-top: 8px;">
+                📋 کپی شناسه
+              </button>
+            </div>
+          </div>
+
+          <!-- v3.11 (U2): technical report for the developer (built on the phone, copied by the learner) -->
+          <div class="tech-report-row">
+            <button class="setting-chip" id="about-tech-report-btn" onclick="openTechReport()">📋 گزارش فنی</button>
+            <div class="tech-report-hint">اگر روی گوشی مشکلی دیدید، این گزارش را کپی کنید و برای سازنده بفرستید.</div>
+          </div>
+
+          <div style="margin-top: 14px; font-size: 12px; color: var(--text-faint);" id="about-version-footer">
+            نگارش رسمی: <span id="app-about-version">نسخهٔ 4.2.1</span> • پاییز ۱۴۰۵ • ۱۰۰٪ آفلاین و بدون تبلیغات
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Golden Achievement Celebration Floating Banner -->
+    <div class="ach-celebrate-banner" id="achievement-unlock-banner">
+      <div style="font-size: 28px; flex-shrink: 0;" id="ach-banner-icon">🏆</div>
+      <div style="flex: 1; min-width: 0;">
+        <div style="font-size: 12px; font-weight: 800; color: #fef08a;">🎉 دستاورد جدید باز شد!</div>
+        <div style="font-size: 14px; font-weight: 900; color: #ffffff;" id="ach-banner-title">واژه‌بان برتر</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.22); padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 900;" id="ach-banner-reward">+۱۵ 💎</div>
+    </div>
+
+    <!-- Themes & Achievements Hub Modal -->
+    <div class="modal-overlay" id="shop-modal-overlay" onclick="closeShopModal()">
+      <div class="modal-bottom-sheet" onclick="event.stopPropagation()" style="max-height: 86vh; overflow-y: auto;">
+        <div class="drag-handle"></div>
+        <div class="sheet-head-row" style="margin-bottom: 10px;">
+          <h3 style="font-size: 15.5px; font-weight: 900; color: var(--emerald-dark); margin: 0;">🏆 تالار افتخارات و گالری تم‌ها</h3>
+          <button class="sheet-close-action" onclick="closeShopModal()" style="margin: 0; width: auto; padding: 5px 12px; font-size: 12px;">بستن</button>
+        </div>
+
+        <div class="hub-summary-card" id="hub-summary-box"></div>
+
+        <div class="hub-seg-tabs">
+          <button type="button" class="hub-seg-btn active" id="hub-tab-btn-badges" onclick="switchHubTab('badges')">🏅 دستاوردهای ۴سطحی</button>
+          <button type="button" class="hub-seg-btn" id="hub-tab-btn-themes" onclick="switchHubTab('themes')">🎨 گالری تم‌ها (۱۰)</button>
+        </div>
+
+        <div id="hub-panel-badges">
+          <div id="shop-badges-list" class="ach-list-wrap"></div>
+        </div>
+
+        <div id="hub-panel-themes" style="display: none;">
+          <div id="shop-themes-list" class="theme-gallery-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Streak Habit Calendar & Streak Freeze Shield Modal -->
+    <div class="modal-overlay" id="streak-modal-overlay" onclick="closeStreakModal()">
+      <div class="modal-bottom-sheet" onclick="event.stopPropagation()" style="max-height: 86vh; overflow-y: auto;">
+        <div class="drag-handle"></div>
+        <div class="sheet-head-row" style="margin-bottom: 10px;">
+          <h3 style="font-size: 15.5px; font-weight: 900; color: var(--emerald-dark); margin: 0;">🔥 زنجیرهٔ مداومت و سپر یخی</h3>
+          <button class="sheet-close-action" onclick="closeStreakModal()" style="margin: 0; width: auto; padding: 5px 12px; font-size: 12px;">بستن</button>
+        </div>
+        <div id="streak-modal-body"></div>
+      </div>
+    </div>
+
+    <!-- Word Detail Modal Bottom Sheet -->
+    <div class="modal-overlay" id="word-modal-overlay" onclick="closeWordModal()">
+      <div class="modal-bottom-sheet" onclick="event.stopPropagation()">
+        <div class="drag-handle"></div>
+        <div class="sheet-head-row">
+          <div>
+            <div style="display: inline-flex; align-items: center; gap: 8px; direction: ltr;">
+              <div class="sheet-word-title" id="modal-word-en">endangered</div>
+              <button type="button" class="inline-word-speaker" id="modal-word-audio-btn" onclick="speakModalWord()" title="شنیدن تلفظ واژه" aria-label="شنیدن تلفظ واژه">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+              </button>
+            </div>
+            <div class="sheet-phonetic-text" id="modal-word-phonetic" dir="ltr">/ɪnˈdeɪndʒərd/</div>
+            <button type="button" class="sentence-audio-action" id="modal-surface-audio-btn" onclick="speakModalSurface()" style="display:none;min-height:44px;margin-top:6px;"></button>
+          </div>
+          <div style="display: flex; gap: 6px; align-items: center;">
+            <button class="star-bookmark-btn" id="modal-word-star-btn" onclick="toggleModalWordStar()" title="نشان‌گذاری">☆</button>
+          </div>
+        </div>
+        <div class="sheet-body-content">
+          <div class="card-illustration-box" id="modal-word-img-wrap" style="margin: 4px 0 10px 0;">
+            <img id="modal-word-img" src="img/vocab/endangered.webp" alt="Word Illustration" class="card-illustration-img" style="width: 116px; height: 116px;">
+          </div>
+          <div>
+            <div class="sheet-field-lbl">معنی رسمی فارسی:</div>
+            <div class="sheet-field-val" id="modal-word-fa">در معرض خطر انقراض</div>
+            <div class="rel-box" id="modal-word-rel" style="display: none;"></div>
+          </div>
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <div class="sheet-field-lbl" id="modal-word-ex-label" style="margin: 0;">جملهٔ نمونه:</div>
+              <button class="sentence-audio-action" onclick="speakModalSentence()">🔊 شنیدن جمله</button>
+            </div>
+            <div class="sheet-example-box" id="modal-word-ex">The Iranian cheetah is an endangered animal.</div>
+          </div>
+          <div style="font-size: 12px; color: var(--text-muted);" id="modal-word-ref">کتاب رسمی دهم (Vision 1) • درس ۱ • صفحهٔ ۱۹</div>
+          <div id="modal-word-badges" style="display: flex; gap: 6px; align-items: center; margin-top: 8px;">
+            <span id="modal-word-source-tag" class="source-tag source-book">کتاب رسمی</span>
+            <span id="modal-word-review-badge" class="review-badge" style="display: none;">⚠️ نیازمند بازبینی</span>
+          </div>
+        </div>
+        <button class="sheet-close-action" onclick="closeWordModal()">بستن پنجره</button>
+      </div>
+    </div>
+
+    <!-- Progress Analytics Modal -->
+    <div class="modal-overlay" id="stats-modal-overlay" onclick="closeStatsModal()">
+      <div class="modal-bottom-sheet" onclick="event.stopPropagation()">
+        <div class="drag-handle"></div>
+        <h3 style="font-size: 16px; font-weight: 900; color: var(--emerald-dark); margin-bottom: 10px; text-align: center;">📊 آمار پیشرفت و تحلیل یادگیری</h3>
+
+        <div class="stats-grid-4">
+          <div class="stat-metric-card">
+            <div class="stat-metric-num" id="stat-mastered-count">۰ از ۵۰</div>
+            <div class="stat-metric-lbl">تسلط کامل (جعبهٔ ۵)</div>
+          </div>
+          <div class="stat-metric-card">
+            <div class="stat-metric-num" id="stat-accuracy-pct">۱۰۰٪</div>
+            <div class="stat-metric-lbl">میانگین دقت پاسخ</div>
+          </div>
+          <div class="stat-metric-card">
+            <div class="stat-metric-num" id="stat-streak-display">۱ روز</div>
+            <div class="stat-metric-lbl">پیوستگی مطالعهٔ روزانه</div>
+          </div>
+          <div class="stat-metric-card">
+            <div class="stat-metric-num" id="stat-reviews-total">۰</div>
+            <div class="stat-metric-lbl">مجموع کل مرورها</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <div class="sheet-field-lbl" style="margin-bottom: 6px;">نمودار فعالیت مرور در ۷ روز گذشته:</div>
+          <div id="stat-weekly-bars" style="display: flex; gap: 4px; background: var(--bg-elevated); padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);"></div>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <div class="sheet-field-lbl" style="margin-bottom: 6px;">واژگان پرخطا و نیازمند تمرین بیشتر:</div>
+          <div id="stat-weak-list" class="weak-words-list"></div>
+          <div class="sheet-field-lbl" style="margin: 12px 0 6px;">جمع‌بندی واژه‌های نیازمند مرور به تفکیک درس (این پایه):</div>
+          <div id="stat-lesson-weak"></div>
+          <button class="hero-cta-btn" onclick="practiceWeakWords()" style="margin-top: 10px; width: 100%; justify-content: center; padding: 10px;">
+            ⚡ تمرین اختصاصی واژگان نیازمند مرور
+          </button>
+        </div>
+
+        <button class="sheet-close-action" onclick="closeStatsModal()">بستن پنجره</button>
+      </div>
+    </div>
+
+    <!-- Settings Modal Bottom Sheet -->
+    <!-- v3.11: grade sheet (compact header button) -->
+    <div class="modal-overlay" id="grade-modal-overlay" onclick="closeGradeModal(event)">
+      <div class="modal-bottom-sheet grade-sheet" onclick="event.stopPropagation()">
+        <div class="drag-handle"></div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <h3 style="margin:0; font-size:15px; color: var(--text-main);">📘 انتخاب پایه</h3>
+          <button class="sheet-close-action" onclick="closeGradeModal()" style="margin:0; width:auto; padding:6px 14px; font-size:12px;">بستن</button>
+        </div>
+        <div id="grade-modal-list" class="grade-modal-list"></div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="settings-modal-overlay" onclick="closeSettingsModal()">
+      <div class="modal-bottom-sheet" onclick="event.stopPropagation()">
+        <div class="drag-handle"></div>
+        <div class="sheet-head-row" style="margin-bottom: 12px;">
+          <h3 style="font-size: 16px; font-weight: 900; color: var(--emerald-dark); margin: 0;">⚙️ تنظیمات برنامه</h3>
+          <button class="sheet-close-action" onclick="closeSettingsModal()" style="margin: 0; width: auto; padding: 6px 14px; font-size: 12px;">بستن</button>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <!-- Day / Night & 8-Theme Gallery -->
+          <div class="setting-item-row appearance-row">
+            <div>
+              <div style="font-weight: 800; font-size: 13px; color: var(--text-main);">تم و ظاهر</div>
+              <div style="font-size: 12px; color: var(--text-muted);" id="settings-theme-status">هماهنگ با گوشی</div>
+            </div>
+            <button type="button" class="setting-chip" onclick="event.stopPropagation(); closeSettingsModal(); openShopModal('themes');">🎨 ۱۰ تم</button>
+          </div>
+          <!-- v3.11: day / night like the phone, or fixed -->
+          <div class="appearance-seg" role="radiogroup" aria-label="ظاهر روشن و تیره">
+            <button type="button" role="radio" data-appearance="auto" onclick="setAppearance('auto')">🌗 هماهنگ با گوشی</button>
+            <button type="button" role="radio" data-appearance="light" onclick="setAppearance('light')">☀️ روشن</button>
+            <button type="button" role="radio" data-appearance="dark" onclick="setAppearance('dark')">🌙 تیره</button>
+          </div>
+
+          <!-- Cheerful Sound Effects Toggle -->
+          <div class="setting-item-row" onclick="toggleSfx()">
+            <div>
+              <div style="font-weight: 800; font-size: 13px; color: var(--text-main);">افکت‌های صوتی تشویقی</div>
+              <div style="font-size: 12px; color: var(--text-muted);">صدای لطیف و شاد هنگام پاسخ درست و دستاوردها</div>
+            </div>
+            <button type="button" class="setting-chip active" id="settings-sfx-btn">🎵 روشن</button>
+          </div>
+
+          <!-- Accent Toggle (US / UK + Dual Oxford IPA) -->
+          <div class="setting-item-row" onclick="toggleAccent()">
+            <div>
+              <div style="font-weight: 800; font-size: 13px; color: var(--text-main);">لهجهٔ تلفظ و آوانگاری آکسفورد (US / UK)</div>
+              <div style="font-size: 12px; color: var(--text-muted);">تغییر هم‌زمان لهجهٔ گوینده و نمادهای آوانگاری (IPA)</div>
+            </div>
+            <button class="setting-chip" id="settings-accent-btn">🇺🇸 آمریکایی (US)</button>
+          </div>
+
+          <!-- Autoplay Toggle -->
+          <div class="setting-item-row" onclick="toggleAutoPlay()">
+            <div>
+              <div style="font-weight: 800; font-size: 13px; color: var(--text-main);">پخش خودکار تلفظ صوتی</div>
+              <div style="font-size: 12px; color: var(--text-muted);">پخش تلفظ واژه هنگام نمایش کارت</div>
+            </div>
+            <button class="setting-chip" id="settings-autoplay-btn">🔈 خاموش</button>
+          </div>
+
+          <!-- Active Recall Toggle -->
+          <div class="setting-item-row" onclick="toggleActiveRecall()">
+            <div>
+              <div style="font-weight: 800; font-size: 13px; color: var(--text-main);">حالت یادآوری فعال (Active Recall)</div>
+              <div style="font-size: 12px; color: var(--text-muted);">پرسش چهارگزینه‌ای پیش از چرخش کارت</div>
+            </div>
+            <button class="setting-chip" id="settings-recall-btn">🧠 روشن</button>
+          </div>
+
+          <!-- Backup and tools section -->
+          <div style="border-top: 1px solid var(--border-subtle); padding-top: 10px; margin-top: 4px;">
+            <div style="font-weight: 800; font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">پشتیبان و ابزارها:</div>
+            <div class="settings-data-list">
+              <div style="display: flex; gap: 6px;">
+                <button class="setting-chip" onclick="exportProgress()" style="flex: 1; justify-content: center;">
+                  💾 ذخیرهٔ پشتیبان (JSON)
+                </button>
+                <button class="setting-chip" onclick="triggerImportBackup()" style="flex: 1; justify-content: center;">
+                  📥 بازیابی پشتیبان
+                </button>
+              </div>
+              <button class="setting-chip" onclick="downloadAudioManifest()" style="justify-content: center;">
+                🎙️ خروجی فهرست ضبط صدا (CSV)
+              </button>
+              <button class="setting-chip" onclick="closeSettingsModal(); switchTab('about');" style="justify-content: center;">
+                🎓 شناسنامهٔ علمی و ارتباط با سازنده
+              </button>
+              <button class="setting-chip danger-chip" style="justify-content: center;" onclick="resetProgress()">
+                🔄 بازنشانی روند مطالعهٔ این پایه
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Native-Styled Confirmation Modal (replaces broken window.confirm!) -->
+    <!-- v3.11 (U2): technical report sheet -->
+    <div class="modal-overlay" id="techreport-modal-overlay" onclick="closeTechReport()">
+      <div class="modal-bottom-sheet" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="techreport-title">
+        <div class="drag-handle"></div>
+        <div class="sheet-head-row" style="margin-bottom: 8px;">
+          <h3 id="techreport-title" style="font-size: 15.5px; font-weight: 900; color: var(--emerald-dark); margin: 0;">📋 گزارش فنی</h3>
+          <button class="sheet-close-action" onclick="closeTechReport()" style="margin: 0; width: auto; padding: 5px 12px; font-size: 12px;">بستن</button>
+        </div>
+        <p class="techreport-intro">این گزارش فقط روی همین گوشی ساخته می‌شود و جایی فرستاده نمی‌شود. برای فرستادن به سازنده، آن را کپی کنید.</p>
+        <div id="techreport-text" class="techreport-text"></div>
+        <button class="techreport-copy-btn" id="techreport-copy-btn" onclick="copyTechReport()">📋 کپی گزارش</button>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="confirm-modal-overlay" onclick="closeConfirmModal()" style="align-items: center; justify-content: center;">
+      <div class="confirm-dialog-card" onclick="event.stopPropagation()">
+        <div style="font-size: 34px; margin-bottom: 6px;">⚠️</div>
+        <h4 id="confirm-modal-title" style="font-size: 15px; font-weight: 900; color: var(--text-main); margin-bottom: 6px;">تأیید عملیات</h4>
+        <p id="confirm-modal-msg" style="font-size: 12.5px; color: var(--text-muted); line-height: 1.7; margin-bottom: 16px;"></p>
+        <div style="display: flex; gap: 8px; justify-content: center;">
+          <button class="setting-chip" onclick="closeConfirmModal()" style="flex: 1; justify-content: center; padding: 9px;">انصراف</button>
+          <button class="setting-chip" id="confirm-modal-ok-btn" style="flex: 1; justify-content: center; padding: 9px; background: #dc2626; color: #fff; border-color: #dc2626;">تأیید و انجام</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clean 5-Destination Material Bottom Navigation Bar -->
+    <nav class="android-bottom-bar">
+      <button class="bottom-tab-item active" onclick="switchTab('home')">
+        <span class="nav-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </span>
+        <span>پیشخوان</span>
+      </button>
+      <button class="bottom-tab-item" onclick="switchTab('leitner')">
+        <span class="nav-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+          </svg>
+        </span>
+        <span>لایتنر</span>
+      </button>
+      <button class="bottom-tab-item" onclick="switchTab('context')">
+        <span class="nav-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+        </span>
+        <span>جمله‌های درس</span>
+      </button>
+      <button class="bottom-tab-item" onclick="switchTab('quiz')">
+        <span class="nav-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="9" y1="15" x2="15" y2="15"></line>
+          </svg>
+        </span>
+        <span>آزمون و بازی</span>
+      </button>
+      <button class="bottom-tab-item" onclick="switchTab('glossary')">
+        <span class="nav-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+        <span>واژه‌نامه</span>
+      </button>
+    </nav>
+
+    <!-- Android System Toast -->
+    <div class="android-toast" id="sys-toast">پیام سیستم</div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="data/master_curriculum.js"></script>
+  <script src="data/further.js"></script>
+  <script src="data/further_audio.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/games.js"></script>
+  <!-- Pre-recorded offline audio modules. -->
+  <script src="js/recorded_audio_router.js"></script>
+  <script src="js/recorded_audio_player.js"></script>
+  <script src="js/recorded_audio_facade.js"></script>
+  <script src="data/recorded_audio_candidates.js"></script>
+  <script src="js/recorded_further_surface_router.js"></script>
+  <script src="data/further_surface_index.js"></script>
+  <script src="js/app.js"></script>
+  <!-- v3.7.0: tap-to-enlarge for the flashcard illustration (closes on tap anywhere or Android back) -->
+  <div id="img-lightbox-overlay" class="img-lightbox-overlay" role="dialog" aria-modal="true" aria-label="تصویر بزرگ واژه">
+    <figure class="img-lightbox-fig">
+      <img id="img-lightbox-img" alt="">
+      <figcaption id="img-lightbox-cap" dir="ltr"></figcaption>
+    </figure>
+    <div class="img-lightbox-hint">برای بستن، هر جای صفحه را لمس کنید</div>
+  </div>
+  <!-- v3.8.0: Further Reading / Listening reader (teacher transcription, user-declared trusted source; source badge + 12px credit) -->
+  <div id="further-reader-overlay" class="further-overlay" role="dialog" aria-modal="true" aria-labelledby="fr-title">
+    <div class="further-top">
+      <button type="button" class="fr-icon-btn" onclick="closeFurtherText()" aria-label="بستن متن">✕</button>
+      <div class="fr-font-ctrl" role="group" aria-label="اندازهٔ متن انگلیسی">
+        <button type="button" id="fr-font-dec" onclick="stepFurtherFont(-2)" aria-label="کوچک‌تر کردن متن">A−</button>
+        <span id="fr-font-val">۱۸</span>
+        <button type="button" id="fr-font-inc" onclick="stepFurtherFont(2)" aria-label="بزرگ‌تر کردن متن">A+</button>
+      </div>
+    </div>
+    <div class="further-scroll" id="fr-scroll">
+      <div class="fr-kind" id="fr-kind"></div>
+      <h2 id="fr-title" dir="ltr"></h2>
+      <button type="button" class="prov-badge prov-badge-btn" id="fr-prov" onclick="toggleFurtherProv()" aria-expanded="false">دربارهٔ متن ⓘ</button>
+      <div class="fr-prov-detail" id="fr-prov-detail" hidden></div>
+      <div class="fr-audio" id="fr-audio" hidden>
+        <button type="button" class="fr-play" id="fr-play" onclick="toggleFurtherAudio()" aria-label="پخش صوت متن">▶</button>
+        <div class="fr-audio-main">
+          <input type="range" class="fr-seek" id="fr-seek" min="0" max="1000" step="1" value="0" dir="ltr" aria-label="جای پخش">
+          <div class="fr-audio-meta">
+            <span class="fr-time" id="fr-time" dir="ltr">۰:۰۰ / ۰:۰۰</span>
+            <button type="button" class="fr-mini" id="fr-back" onclick="seekFurtherAudio(-5)" aria-label="پنج ثانیه عقب">↺ ۵</button>
+            <button type="button" class="fr-mini" id="fr-rate" onclick="cycleFurtherRate()" aria-label="سرعت پخش">۱×</button>
+          </div>
+        </div>
+      </div>
+      <section class="fr-stage">
+        <h3 id="fr-h1">۱. پیش از خواندن</h3>
+        <p>از روی عنوان حدس بزنید متن دربارهٔ چیست. واژه‌های همین درس که در متن آمده‌اند:</p>
+        <div class="fr-chips" id="fr-pre-words"></div>
+      </section>
+      <section class="fr-stage">
+        <h3 id="fr-h2">۲. هنگام خواندن</h3>
+        <p id="fr-hint2">روی هر واژه بزنید تا معنی‌اش نمایش داده شود. واژه‌های درس پررنگ‌اند.</p>
+        <button type="button" class="fr-mini fr-veil-btn" id="fr-hide" onclick="toggleFurtherVeil()" aria-pressed="false" hidden>🙈 اول فقط گوش بده</button>
+        <p class="fr-veil-hint" id="fr-veil-hint" hidden>متن پوشیده است. گوش بدهید؛ برای دیدن متن روی آن بزنید.</p>
+        <div class="fr-text" id="fr-text" dir="ltr"></div>
+      </section>
+      <section class="fr-stage">
+        <h3 id="fr-h3">۳. پس از خواندن</h3>
+        <p>واژه‌هایی که لمس کردید (با ⭐ برای مرور نشان کنید):</p>
+        <div class="fr-chips" id="fr-post-words"></div>
+        <p>چقدر از متن را فهمیدید؟</p>
+        <div class="fr-self" id="fr-self" role="group" aria-label="خودارزیابی">
+          <button type="button" data-v="1" aria-pressed="false">کم</button>
+          <button type="button" data-v="2" aria-pressed="false">تا حدی</button>
+          <button type="button" data-v="3" aria-pressed="false">بیشتر آن را</button>
+        </div>
+      </section>
+      <section class="fr-stage">
+        <h3 id="fr-h4">۴. تمرین درک مطلب</h3>
+        <p>پنج فعالیت کوتاه از دل همین متن: جای‌خالی، معنی واژه در متن، بهترین عنوان و درست/نادرست. پاسخ‌ها از خودِ متن ساخته می‌شوند.</p>
+        <button type="button" class="fr-mini" id="fr-quiz-start" onclick="startFurtherQuiz()">📝 شروع تمرین این متن</button>
+        <div id="fr-quiz" style="margin-top:10px;"></div>
+      </section>
+      <button type="button" class="fr-done-btn" id="fr-done" onclick="finishFurtherText()">خواندم ✓</button>
+    </div>
+    <div class="fr-gloss" id="fr-gloss" role="status" aria-live="polite"></div>
+  </div>
+</body>
+</html>

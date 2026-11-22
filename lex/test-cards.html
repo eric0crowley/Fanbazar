@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FarhangLex 4.0.0 — کارت‌های آزمون (بازبینی نهایی)</title>
+<style>
+  body{font-family:Tahoma,Arial,sans-serif;background:#f1f5f9;margin:0;color:#0f172a}
+  header{position:sticky;top:0;background:#0f766e;color:#fff;padding:10px 14px;z-index:5}
+  header h1{font-size:17px;margin:0 0 8px}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  select,input{padding:7px 10px;border-radius:8px;border:1px solid #cbd5e1;font-size:14px}
+  #count{font-size:13px;opacity:.95}
+  main{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;padding:14px}
+  .card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+  .card img{width:100%;height:180px;object-fit:cover;background:#e2e8f0;display:block}
+  .body{padding:10px 12px}
+  .word{font-size:19px;font-weight:bold;direction:ltr;text-align:left}
+  .phon{color:#64748b;direction:ltr;text-align:left;font-size:13px}
+  .mean{font-size:15px;margin-top:4px}
+  .ex{direction:ltr;text-align:left;color:#334155;font-size:13px;margin-top:6px}
+  .meta{color:#94a3b8;font-size:11px;margin-top:6px}
+  .audio{display:flex;gap:6px;margin-top:8px}
+  .audio button{flex:1;padding:6px;border:0;border-radius:8px;background:#0f766e;color:#fff;cursor:pointer;font-size:13px}
+  .audio button.uk{background:#334155}
+</style>
+</head>
+<body>
+<header>
+  <h1>فرهنگ‌لکس 4.0.0 — بازبینی کارت‌ها (تصویر + معنی + مثال + صوت US/UK)</h1>
+  <div class="row">
+    <select id="grade"></select>
+    <input id="q" type="search" placeholder="جست‌وجوی واژه…">
+    <span id="count"></span>
+  </div>
+</header>
+<main id="grid"></main>
+<script src="data/master_curriculum.js"></script>
+<script>
+  function slugOf(c){
+    if (typeof c.illustrationSlug === 'string' && /^[a-z0-9_]+$/.test(c.illustrationSlug)) return c.illustrationSlug;
+    return (c.word||'').toLowerCase().replace(/[^a-z0-9]/g,'_');
+  }
+  const grades = window.MASTER_CURRICULUM.grades;
+  const all = [];
+  Object.values(grades).forEach(g => (g.vocabulary||[]).forEach(c => all.push({...c, gradeName: g.name || g.id})));
+  const sel = document.getElementById('grade'), grid = document.getElementById('grid'),
+        q = document.getElementById('q'), count = document.getElementById('count');
+  sel.innerHTML = '<option value="all">همهٔ پایه‌ها (' + all.length + ' کارت)</option>' +
+    Object.values(grades).map(g => `<option value="${g.id}">${g.name || g.id} (${(g.vocabulary||[]).length})</option>`).join('');
+  let audio = null;
+  function play(rel){ if(!rel) return; if(audio) audio.pause(); audio = new Audio('audio/' + rel); audio.play(); }
+  function render(){
+    const gv = sel.value, needle = q.value.trim().toLowerCase();
+    const list = all.filter(c => (gv==='all' || c.id.startsWith(gv+':')) && (!needle || (c.word||'').toLowerCase().includes(needle)));
+    count.textContent = list.length + ' کارت';
+    grid.innerHTML = list.map(c => `
+      <div class="card">
+        <img loading="lazy" src="img/vocab/${slugOf(c)}.webp" onerror="this.style.visibility='hidden'">
+        <div class="body">
+          <div class="word">${c.word||''}</div>
+          <div class="phon">${c.phoneticUs||c.phonetic||''} · ${c.phoneticUk||''}</div>
+          <div class="mean">${c.meaning||''}</div>
+          <div class="ex">${c.example||''}</div>
+          <div class="audio">
+            <button onclick='play(${JSON.stringify(c.audioFile||'')})'>▶ US</button>
+            <button class="uk" onclick='play(${JSON.stringify(c.audioFileUk||'')})'>▶ UK</button>
+          </div>
+          <div class="meta">${c.id} · درس ${c.lesson||''} · ص ${c.page||''}</div>
+        </div>
+      </div>`).join('');
+  }
+  sel.onchange = render; q.oninput = render; render();
+</script>
+</body>
+</html>

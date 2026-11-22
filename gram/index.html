@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="fresh_mint">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+  <meta name="theme-color" content="#047857" />
+  <meta name="color-scheme" content="light dark" />
+  <!-- Content-Security-Policy: the app is 100% offline. No external requests,
+       no framing, no plugin content. Inline scripts/styles stay allowed
+       because the UI uses inline event handlers. -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' 'unsafe-inline' data: blob: file:;
+                 script-src 'self' 'unsafe-inline' file:;
+                 style-src 'self' 'unsafe-inline' file:;
+                 img-src 'self' data: blob: file:;
+                 media-src 'self' data: blob: file:;
+                 font-src 'self' data: file:;
+                 connect-src 'none'; frame-src 'none'; object-src 'none';
+                 base-uri 'none'; form-action 'none';" />
+  <title>FarhangGram (فرهنگ‌گرام) — گرامر بدون استرس</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- v2.14: paints the saved theme (and the phone's day/night for «هماهنگ با گوشی») before anything else -->
+  <script src="js/theme_boot.js"></script>
+  <script src="js/safety_net.js"></script>
+</head>
+<body>
+
+  <!-- ==================== APP SHELL ==================== -->
+  <div class="native-app-container">
+
+    <!-- compact header: 56px, one row -->
+    <header class="app-header">
+      <button class="brand-btn" onclick="FGApp.switchTab('path')" aria-label="رفتن به مسیر یادگیری">
+        <span class="brand-logo" aria-hidden="true">
+          <img src="img/app_icon_header.webp" alt="" width="34" height="34" decoding="async" />
+        </span>
+        <span class="brand-name">فرهنگ‌گرام</span>
+      </button>
+
+      <div class="hud-row" role="status" aria-live="polite">
+        <span class="hud-pill streak" title="روزهای پیاپی">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2s1 4-2 7c-2.4 2.4-3 4.6-3 7a6 6 0 0012 0c0-2-.7-3.6-1.7-5-.6 1-1.6 1.6-2.6 1.6C15 8.6 15 4 13 2z"/></svg>
+          <b id="hud-streak">۰</b>
+        </span>
+        <span class="hud-pill xp" title="امتیاز">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+          <b id="hud-xp">۰</b>
+        </span>
+        <span class="hud-pill coin" title="سکه">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5h5M9.5 14.5h5" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+          <b id="hud-coins">۰</b>
+        </span>
+      </div>
+
+      <button class="icon-btn" onclick="FGApp.openSettings()" aria-label="تنظیمات و دربارهٔ برنامه">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.2.61.75 1 1.4 1H21a2 2 0 1 1 0 4h-.09c-.65 0-1.2.39-1.51 1z"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- content -->
+    <main class="app-content" id="app-content">
+      <section id="view-path" class="tab-view active" role="region" aria-label="مسیر یادگیری"><div id="path-container"></div></section>
+      <section id="view-practice" class="tab-view" role="region" aria-label="تمرین">
+        <div id="practice-container"></div>
+        <div id="games-container" hidden></div>
+      </section>
+      <section id="view-rewards" class="tab-view" role="region" aria-label="جوایز"><div id="rewards-container"></div></section>
+      <section id="view-me" class="tab-view" role="region" aria-label="من"><div id="me-container"></div></section>
+    </main>
+
+    <!-- 4-tab bottom navigation -->
+    <nav class="bottom-nav" role="navigation" aria-label="ناوبری اصلی">
+      <button class="active" data-tab="path" onclick="FGApp.switchTab('path')" aria-current="page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span>مسیر</span>
+      </button>
+      <button data-tab="practice" onclick="FGApp.switchTab('practice')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+        <span>تمرین</span>
+      </button>
+      <button data-tab="rewards" onclick="FGApp.switchTab('rewards')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6L12 17l-5.9 3.2 1.2-6.6L2.5 9l6.6-.9z"/></svg>
+        <span>جوایز</span>
+      </button>
+      <button data-tab="me" onclick="FGApp.switchTab('me')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+        <span>من</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ==================== BOTTOM SHEET ==================== -->
+  <div class="sheet-backdrop" id="app-sheet-backdrop" role="dialog" aria-modal="true" aria-hidden="true" aria-label="پنجرهٔ گفت‌وگو" onclick="if(event.target===this){FGApp.closeModal();}">
+    <div class="sheet" id="app-sheet"></div>
+  </div>
+
+  <!-- ==================== ONBOARDING ==================== -->
+  <div class="onboarding" id="onboarding" hidden>
+    <div class="ob-inner" id="ob-inner"></div>
+  </div>
+
+  <!-- ==================== OVERLAYS ==================== -->
+  <div class="confetti-layer" id="confetti-layer" aria-hidden="true"></div>
+  <div class="toast" id="app-toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ==================== SCRIPTS ==================== -->
+  <script src="data/grammar_curriculum.js"></script>
+  <script src="js/sound.js"></script>
+  <script src="js/mascot.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/games.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

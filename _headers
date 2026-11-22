@@ -1,0 +1,39 @@
+# Cloudflare Pages custom headers
+# https://developers.cloudflare.com/pages/configuration/headers/
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
+
+# HTML: always revalidate so new deploys show up immediately
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# JS / CSS / data: short cache (filenames are not hashed)
+/*.js
+  Cache-Control: public, max-age=600
+/*.css
+  Cache-Control: public, max-age=600
+
+# Audio recordings: content never changes for a given filename
+/sentences/*
+  Cache-Control: public, max-age=31536000, immutable
+/tokens/*
+  Cache-Control: public, max-age=31536000, immutable
+/further/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Fonts and images
+/lex/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+/lex/img/*
+  Cache-Control: public, max-age=31536000, immutable
+/gram/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+/gram/img/*
+  Cache-Control: public, max-age=31536000, immutable
+/darsyar/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+/darsyar/img/*
+  Cache-Control: public, max-age=31536000, immutable
