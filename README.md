@@ -48,6 +48,29 @@
 - حداکثر حجم هر فایل: ۲۵ MiB — بزرگ‌ترین فایل این سایت ۳٫۲ MiB است ✅
 - حداکثر تعداد فایل در هر دیپلوی: ۲۰٬۰۰۰ — این سایت ۱۵٬۸۲۷ فایل دارد ✅
 
+## راهنمای دیپلوی روی Cloudflare Pages (اتصال GitHub)
+
+1. **Workers & Pages → Create → Pages → Connect to Git**
+2. اجازهٔ دسترسی به ریپوی `eric0crowley/Fanbazar` را بدهید (Only select repositories).
+3. **Production branch**: `arena/ed019103-fanbazar`
+   (اگر بعداً به `main` مرج شد، همین فیلد را در Settings عوض کنید.)
+4. **Framework preset**: `None`
+5. **Build command**: `exit 0` — **Build output directory**: `/`
+6. **Save and Deploy**. در لاگ باید `Found 15830 files` و بعد
+   `Success: Your site was deployed!` دیده شود.
+7. آدرس نهایی: `https://<project-name>.pages.dev`
+
+بعد از دیپلوی این چهار آدرس باید ۲۰۰ بدهند: `/`، `/lex/`، `/gram/`، `/darsyar/`
+و نمونهٔ صوت: `/sentences/us/000.mp3`، `/tokens/uk/000.mp3`،
+`/further/uk/vision_1_l1_reading.mp3`.
+
+## نکته‌های شناخته‌شده (از فایل‌های اصلی، تغییری داده نشد)
+
+- در `lex/data/recorded_audio_candidates.js` دو آیتم `vision_3_l3_listening1` و
+  `vision_3_l3_listening2` فایل صوتی هم را جابه‌جا گرفته‌اند؛ یعنی «Listening 2»
+  صوت «Listening 1» را پخش می‌کند. هر دو فایل روی سرور موجودند و اصلاحش یک
+  تغییر دادهٔ کوچک است (به‌خواست شما انجام می‌شود).
+
 ## تست محلی
 
 ```bash
