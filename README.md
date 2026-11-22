@@ -46,7 +46,7 @@
 ## محدودیت‌های Cloudflare Pages که رعایت شده‌اند
 
 - حداکثر حجم هر فایل: ۲۵ MiB — بزرگ‌ترین فایل این سایت ۳٫۲ MiB است ✅
-- حداکثر تعداد فایل در هر دیپلوی: ۲۰٬۰۰۰ — این سایت ۱۵٬۸۲۷ فایل دارد ✅
+- حداکثر تعداد فایل در هر دیپلوی: ۲۰٬۰۰۰ — این سایت حدود ۱۵٬۸۳۰ فایل دارد ✅
 
 ## راهنمای دیپلوی روی Cloudflare Pages (اتصال GitHub)
 
@@ -63,6 +63,23 @@
 بعد از دیپلوی این چهار آدرس باید ۲۰۰ بدهند: `/`، `/lex/`، `/gram/`، `/darsyar/`
 و نمونهٔ صوت: `/sentences/us/000.mp3`، `/tokens/uk/000.mp3`،
 `/further/uk/vision_1_l1_reading.mp3`.
+
+## اگر پروژه به‌صورت Worker ساخته شد (`npx wrangler deploy`)
+
+مسیر پیش‌فرض داشبورد (**Create → Import a repository**) پروژهٔ Worker می‌سازد، نه
+Pages. این هم پشتیبانی می‌شود: `wrangler.jsonc` ریشهٔ ریپو را به‌عنوان پوشهٔ
+استاتیک معرفی می‌کند و `.assetsignore` فایل‌های غیرسایتی (`.git`، `README.md`،
+`wrangler.jsonc` و…) را از آپلود کنار می‌گذارد. `_headers` در این حالت هم اعمال می‌شود.
+
+تنظیم لازم در **Settings → Build → Branch control**:
+
+- **Production branch**: `arena/ed019103-fanbazar`
+- **Build command**: خالی — **Deploy command**: `npx wrangler deploy` — **Root directory**: `/`
+
+خطای `Could not detect a directory containing static files` یعنی برنچ `main`
+بیلد شده است (که فقط `README.md` دارد)، نه برنچ سایت.
+
+آدرس نهایی در این حالت: `https://<worker-name>.<subdomain>.workers.dev`
 
 ## نکته‌های شناخته‌شده (از فایل‌های اصلی، تغییری داده نشد)
 
